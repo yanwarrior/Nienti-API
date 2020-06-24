@@ -55,6 +55,8 @@ INSTALLED_APPS += [
     'users',
     'suppliers',
     'products',
+    'customers',
+    'sales',
 ]
 
 
@@ -72,7 +74,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
-    'PAGE_SIZE': 2,
+    'PAGE_SIZE': 3,
     'DATETIME_FORMAT': '%A, %d %B %Y %H:%M',
     'DATE_FORMAT': '%A, %d %B %Y',
     'DEFAULT_FILTER_BACKENDS': [
