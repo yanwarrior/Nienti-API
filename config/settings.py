@@ -54,6 +54,8 @@ INSTALLED_APPS += [
     'utils',
     'users',
     'suppliers',
+    'customers',
+    'products',
 ]
 
 

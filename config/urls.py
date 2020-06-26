@@ -3,6 +3,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views as jwt_views
 
+from customers.views import CustomerViewSet
+from products.views import ProductViewSet
 from suppliers.views import SupplierViewSet
 from users.views import UserViewSet
 
@@ -17,4 +19,6 @@ urlpatterns = [
 router = DefaultRouter()
 router.register(r'suppliers', SupplierViewSet, basename='supplier')
 router.register(r'users', UserViewSet, basename='user')
+router.register(r'customers', CustomerViewSet, basename='customer')
+router.register(r'products', ProductViewSet, basename='product')
 urlpatterns += router.urls
