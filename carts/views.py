@@ -1,4 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from carts.models import Cart
 from carts.serializers import CartSerializer
@@ -23,3 +25,8 @@ class CartViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=['DELETE'])
+    def clear(self, request, pk=None):
+        self.get_queryset().delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

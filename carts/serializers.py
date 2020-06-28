@@ -25,15 +25,10 @@ class CartSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         product = attrs.get('product')
         quantity = attrs.get('quantity')
-        request = self.context.get('request')
         subtotal = attrs.get('subtotal')
-        exists = Cart.objects.filter(product=product, user=request.user).exists()
 
         if (product.stock - quantity) <= 0:
             raise ValidationError('Stock not enough!')
-
-        if exists:
-            raise ValidationError('Your item has been added!')
 
         if subtotal != (quantity * product.price):
             raise ValidationError('Subtotal not valid!')
