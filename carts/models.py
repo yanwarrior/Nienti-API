@@ -13,6 +13,7 @@ class Cart(Timestamp):
     price = models.PositiveIntegerField()
     stock = models.PositiveIntegerField()
     quantity = models.PositiveIntegerField()
+    subtotal = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.product.name
