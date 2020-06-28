@@ -15,5 +15,8 @@ class CartSerializer(serializers.ModelSerializer):
             'price',
             'stock',
         ]
+        read_only_fields = [
+            'user',
+        ]
 
 
