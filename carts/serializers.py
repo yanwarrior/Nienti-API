@@ -15,6 +15,7 @@ class CartSerializer(serializers.ModelSerializer):
             'unit',
             'price',
             'stock',
+            'quantity',
             'subtotal',
         ]
         read_only_fields = [
