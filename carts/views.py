@@ -1,3 +1,5 @@
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -30,3 +32,9 @@ class CartViewSet(viewsets.ModelViewSet):
     def clear(self, request, pk=None):
         self.get_queryset().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=['POST'])
+    def summary(self, request, pk=None):
+        queryset = self.get_queryset()
+        cart_summary = queryset.aggregate(summary=Coalesce(Sum('subtotal'), 0))
+        return Response(data=cart_summary)
