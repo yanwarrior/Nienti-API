@@ -57,6 +57,7 @@ INSTALLED_APPS += [
     'customers',
     'products',
     'carts',
+    'sales',
 ]
 
 
