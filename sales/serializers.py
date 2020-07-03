@@ -8,6 +8,13 @@ from sales.models import Sale, Item
 
 
 class SaleSerializer(serializers.ModelSerializer):
+    _customer_name = serializers.SerializerMethodField()
+
+    def get__customer_name(self, obj: Sale):
+        if obj.customer:
+            return obj.customer.name
+        return ''
+
     class Meta:
         model = Sale
         fields = [
@@ -22,6 +29,7 @@ class SaleSerializer(serializers.ModelSerializer):
             'tax',
             'pay',
             'change',
+            '_customer_name',
         ]
 
         read_only_fields = ['user']
@@ -74,6 +82,9 @@ class SaleSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    sold = serializers.CharField()
+    sum_quantity = serializers.IntegerField()
+
     class Meta:
         model = Item
         fields = [
@@ -87,4 +98,11 @@ class ItemSerializer(serializers.ModelSerializer):
             'quantity',
             'subtotal',
         ]
+
+
+class ItemBestSellerSerializer(serializers.Serializer):
+    sold = serializers.CharField()
+    sum_quantity = serializers.IntegerField()
+    name = serializers.CharField()
+    product = serializers.IntegerField()
 

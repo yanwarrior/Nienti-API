@@ -14,6 +14,9 @@ class ProductViewSet(viewsets.ModelViewSet):
         'name',
         'unit',
     ]
+    filterset_fields = {
+        'stock': ['gte', 'lte', 'exact'],
+    }
 
     @action(detail=False, methods=['GET'])
     def choices(self, request, pk=None):
