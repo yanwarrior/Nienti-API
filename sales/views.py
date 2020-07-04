@@ -7,6 +7,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from carts.models import Cart
+from config.settings import CURRENCY
+from products.models import Product
 from sales.models import Sale, Item
 from sales.serializers import SaleSerializer, ItemSerializer, ItemBestSellerSerializer
 
@@ -38,7 +40,12 @@ class SaleViewSet(viewsets.ModelViewSet):
         sale = serializer.save(user=self.request.user)
         carts = Cart.objects.filter(user=self.request.user)
         item_set = []
+        product_set = []
         for cart in carts:
+            product = cart.product
+            product.stock = product.stock - cart.quantity
+            product_set.append(product)
+
             item_set.append(
                 Item(
                     product=cart.product,
@@ -54,6 +61,7 @@ class SaleViewSet(viewsets.ModelViewSet):
 
         # TODO: update product stock before carts remove or after 
         Item.objects.bulk_create(item_set)
+        Product.objects.bulk_update(product_set, ['stock'])
         carts.delete()
 
     @action(detail=True, methods=['POST'])
@@ -136,9 +144,9 @@ class SaleViewSet(viewsets.ModelViewSet):
             item_body.append([
                 counter,
                 item.name,
-                "${:,.2f}".format(item.price),
+                CURRENCY.format(item.price),
                 f'{item.quantity} {item.unit.capitalize()}',
-                "${:,.2f}".format(item.subtotal)
+                CURRENCY.format(item.subtotal)
             ])
             counter += 1
 
@@ -183,7 +191,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                                     'style': 'tableHeader'
                                 },
                                 {
-                                    'text': "${:,.2f}".format(sale.total),
+                                    'text': CURRENCY.format(sale.total),
                                     'style': 'green',
                                 }
                             ],
@@ -193,7 +201,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                                     'style': 'tableHeader'
                                 },
                                 {
-                                    'text': "${:,.2f}".format(sale.discount),
+                                    'text': CURRENCY.format(sale.discount),
                                 },
                             ],
                             [
@@ -202,7 +210,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                                     'style': 'tableHeader'
                                 },
                                 {
-                                    'text': "${:,.2f}".format(sale.tax),
+                                    'text': CURRENCY.format(sale.tax),
                                 },
                             ],
                             [
@@ -211,7 +219,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                                     'style': 'tableHeader'
                                 },
                                 {
-                                    'text': "${:,.2f}".format(sale.total_after),
+                                    'text': CURRENCY.format(sale.total_after),
                                     'color': 'green'
                                 },
                             ]
@@ -232,7 +240,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                                     'style': 'tableHeader'
                                 },
                                 {
-                                    'text': "${:,.2f}".format(sale.pay),
+                                    'text': CURRENCY.format(sale.pay),
                                 },
                             ],
                             [
@@ -241,7 +249,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                                     'style': 'tableHeader'
                                 },
                                 {
-                                    'text': "${:,.2f}".format(sale.change)
+                                    'text': CURRENCY.format(sale.change)
                                 }
                             ]
                         ]
@@ -507,7 +515,7 @@ class SaleViewSet(viewsets.ModelViewSet):
                 counter,
                 item.get('name'),
                 item.get('quantity'),
-                "Rp. {:,.2f}".format(item.get('total'))
+                CURRENCY.format(item.get('total'))
             ])
 
             counter += 1

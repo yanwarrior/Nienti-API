@@ -75,7 +75,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
-    'PAGE_SIZE': 2,
+    'PAGE_SIZE': 25,
     'DATETIME_FORMAT': '%A, %d %B %Y %H:%M',
     'DATE_FORMAT': '%A, %d %B %Y',
     'DEFAULT_FILTER_BACKENDS': [
@@ -193,7 +193,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
@@ -201,6 +201,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+CURRENCY = 'IDR {:,.2f}'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

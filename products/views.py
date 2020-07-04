@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -27,7 +27,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         tampil. Ini tidak berimpact pada list produk
         pada method list.
         """
-        product_exclude = Cart.objects.filter(user=self.request.user).values_list('product')
+        product_exclude = Cart.objects.filter(user=self.request.user).values_list('product', flat=True)
         queryset = self.filter_queryset(self.get_queryset()).exclude(pk__in=product_exclude)
 
         page = self.paginate_queryset(queryset)
